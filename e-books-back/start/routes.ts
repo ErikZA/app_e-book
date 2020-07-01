@@ -27,7 +27,7 @@ Route.get('/', async () => {
 
 Route.post('/users', 'UsersController.store')
 
-Route.post('/login', 'UsersController.login')
+Route.post('/auth', 'AuthController.auth')
 
 Route.get('/uploads/:image', async ({ response, params }) => {
   const filePath = Application.publicPath('uploads')

@@ -26,5 +26,6 @@ declare module '@ioc:Adonis/Core/Event' {
   |
   */
   interface EventsList {
+    'user:send_mail': string;
   }
 }
