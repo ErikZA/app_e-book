@@ -11,19 +11,12 @@
     "Contracts": "contracts",
     "Config": "config"
   },
-  "preloads": [
-    "./start/routes",
-    "./start/kernel"
-  ],
+  "preloads": ["./start/routes", "./start/kernel", "./start/events"],
   "providers": [
     "./providers/AppProvider",
     "@adonisjs/core",
     "@adonisjs/lucid",
     "@adonisjs/auth"
   ],
-  "metaFiles": [
-    ".env",
-    ".adonisrc.json",
-    "public/**"
-  ]
+  "metaFiles": [".env", ".adonisrc.json", "public/**"]
 }

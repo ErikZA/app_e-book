@@ -27,6 +27,7 @@ Route.get('/', async () => {
 
 Route.post('/users', 'UsersController.store')
 
+Route.post('/forgot_password', 'AuthController.forgotPassword')
 Route.post('/auth', 'AuthController.auth')
 
 Route.get('/uploads/:image', async ({ response, params }) => {

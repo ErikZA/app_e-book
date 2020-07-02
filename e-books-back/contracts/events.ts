@@ -27,5 +27,11 @@ declare module '@ioc:Adonis/Core/Event' {
   */
   interface EventsList {
     'user:send_mail': string;
+    'auth:send_mail_forgot_passWord': EmailForgotProps;
   }
+}
+
+export interface EmailForgotProps {
+  email: string;
+  token: string;
 }
