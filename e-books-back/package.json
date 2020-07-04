@@ -28,6 +28,7 @@
     "@adonisjs/core": "^5.0.0-preview-rc-1.9",
     "@adonisjs/fold": "^6.3.5",
     "@adonisjs/lucid": "^8.2.2",
+    "handlebars": "^4.7.6",
     "mysql": "^2.18.1",
     "nodemailer": "^6.4.10",
     "nodemailer-express-handlebars": "^4.0.0",

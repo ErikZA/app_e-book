@@ -13,9 +13,12 @@ const sendMailForgotPassWord = async (
 ): Promise<any> => {
   await Promise.resolve(
     setTimeout(() => {
-      // Mail.to = mailProps.email;
-      Mail.template = 'auth/forgot_password'
-      Mail.context = { token: mailProps.token }
+      // Mail.to = mailProps.email
+      Mail.from = 'erikzambeliti395@gmail.com'
+      Mail.html = '/mail/auth/forgot_password.html'
+      Mail.subject = 'Recover Password'
+      Mail.to = mailProps.email
+      Mail.context = mailProps.token
       Mail.sendMail()
     }, 3600)
   )

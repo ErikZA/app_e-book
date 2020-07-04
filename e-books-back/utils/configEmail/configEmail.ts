@@ -1,57 +1,82 @@
 import * as nodemailer from 'nodemailer'
 import Env from '@ioc:Adonis/Core/Env'
-import hbs from 'nodemailer-express-handlebars'
 import Application from '@ioc:Adonis/Core/Application'
+import handlebars from 'handlebars'
+import fs from 'fs'
 
 class Mail {
   constructor (
     public to?: string,
-    public context?: any,
-    public template?: string
+    public from?: string,
+    public context?: string,
+    public html?: string,
+    public subject?: string
   ) {}
 
   public sendMail () {
     let mailOptions = {
-      // from: Env.get('HOST_EMAIL', 'email@gmail.com') as string,
-      from: 'erik_12_nf@live.com',
-      to: Env.get('HOST_EMAIL', 'email@gmail.com') as string,
-      context: this.context.token,
-      template: this.template,
+      from: this.from,
+      to: this.to,
+      html: this.html,
+      subject: this.subject,
     }
 
     const transporter = nodemailer.createTransport({
-      host: Env.get('HOST_EMAIL', 'email@gmail.com') as string,
-      port: Number(Env.get('PORT_EMAIL', '00') as string),
-      secure: false,
+      service: 'gmail',
       auth: {
         user: Env.get('USER_EMAIL', 'email@gmail.com') as string,
         pass: Env.get('PASS_EMAIL', 'email@gmail.com') as string,
       },
-      tls: {
-        rejectUnauthorized: false,
-      },
     })
 
-    console.log(Application.publicPath('mail'))
-    transporter.use(
-      'compile',
-      hbs({
-        viewEngine: 'handlebars',
-        viewPath: Application.publicPath('mail'),
-        extName: '.html',
+    const readHTMLFile = function (
+      path: string,
+      callback: (
+        error?: NodeJS.ErrnoException | null,
+        html?: string | null
+      ) => void
+    ) {
+      fs.readFile(path, { encoding: 'utf-8' }, function (err, html) {
+        if (err) {
+          callback(err, null)
+          throw err
+        } else {
+          callback(null, html)
+        }
       })
-    )
-    transporter.sendMail(mailOptions, function (error: Error) {
-      console.log(mailOptions)
+    }
 
-      if (error) {
-        console.log('Error sent eamil: ' + error.message)
-        return error.message
-      } else {
-        console.log('Success sent eamil')
-        return 'Success!'
+    readHTMLFile(
+      Application.publicPath('resources') + mailOptions.html,
+      (error, html) => {
+        if (!error) {
+          const template = handlebars.compile(html)
+          const replacements = {
+            token: String(this.context),
+          }
+          const htmlToSend = template(replacements)
+          mailOptions.html = htmlToSend
+          transporter.sendMail(
+            {
+              from: `E-book <${mailOptions.from}>`,
+              to: mailOptions.to,
+              subject: mailOptions.subject,
+              html: mailOptions.html,
+            },
+            function (error: Error) {
+              if (error) {
+                console.log('Sent coldn\'t sent')
+                console.log(error)
+                return error.message
+              } else {
+                console.log('Success sent eamil')
+                return 'Success!'
+              }
+            }
+          )
+        }
       }
-    })
+    )
   }
 }
 
