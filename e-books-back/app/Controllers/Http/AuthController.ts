@@ -71,9 +71,6 @@ export default class AuthController {
       )
 
       const now = new Date()
-      console.log(now)
-      console.log(new Date(token.passwordResetExpires.toJSON()))
-      console.log(token.passwordResetExpires)
       if (now > new Date(token.passwordResetExpires.toJSON())) {
         return response.ok({
           code: 400,
