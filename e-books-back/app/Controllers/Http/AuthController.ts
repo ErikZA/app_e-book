@@ -46,8 +46,10 @@ export default class AuthController {
             token: token,
           })
         }
-
-        return useToken
+        return response.ok({
+          code: 200,
+          message: 'Sending',
+        })
       } catch (e) {
         return response.ok({
           code: 400,
@@ -55,6 +57,37 @@ export default class AuthController {
           exceptionMsg: e,
         })
       }
+    }
+  }
+
+  public async resetPassword ({ request, response }: HttpContextContract) {
+    const reset = request.only(['email', 'password', 'token'])
+
+    try {
+      const user = await User.findByOrFail('email', reset.email)
+      const token = await UseToken.findByOrFail(
+        'password_reset_token',
+        reset.token
+      )
+
+      const now = new Date()
+      console.log(now)
+      console.log(new Date(token.passwordResetExpires.toJSON()))
+      console.log(token.passwordResetExpires)
+      if (now > new Date(token.passwordResetExpires.toJSON())) {
+        return response.ok({
+          code: 400,
+          message: 'Token expired, try again',
+        })
+      }
+      user.password = reset.password
+      return await user.save()
+    } catch (e) {
+      return response.ok({
+        code: 400,
+        message: 'Cannot reset password, try again',
+        exceptionMsg: e,
+      })
     }
   }
 }
