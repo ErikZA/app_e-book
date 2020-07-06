@@ -1,9 +1,13 @@
 import React from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { withFormik, FormikProps } from "formik";
 import * as Yup from "yup";
 
+import { asyncNewUser } from "../../../store/ducks/users/actions";
 import { Container, Typography, TextField, Button } from "@material-ui/core";
+import { User } from "../../../store/ducks/users/types";
+import { ApplicationState } from "../../../store";
 
 interface FormValues {
   firstName: string;
@@ -11,6 +15,7 @@ interface FormValues {
   email: string;
   password: string;
   rememberPassword: string;
+  dispatch: (callback?: any) => void;
 }
 
 interface MyFormProps {
@@ -19,9 +24,16 @@ interface MyFormProps {
   initialEmail?: string;
   initialPassword?: string;
   initialRememberPassword: string;
+  dispatch: (callback?: any) => void;
 }
 
 const InnerForm = (props: FormikProps<FormValues>) => {
+  const dataUsers = useSelector<ApplicationState, User[]>(
+    (store) => store.users.data
+  );
+  console.log(dataUsers);
+  props.values.dispatch = useDispatch();
+
   const {
     values,
     errors,
@@ -38,7 +50,7 @@ const InnerForm = (props: FormikProps<FormValues>) => {
         <div className="mt-0 mt-md-0">
           <div className="text-center">
             <Typography component="h1" variant="h6">
-              My Party
+              My App
             </Typography>
             <Typography component="p" variant="subtitle1">
               Please create a new account here
@@ -160,6 +172,7 @@ const SignUp = withFormik<MyFormProps, FormValues>({
     firstName: props.initialFirstName || "",
     lastName: props.initialLastName || "",
     rememberPassword: props.initialRememberPassword || "",
+    dispatch: props.dispatch,
   }),
 
   validationSchema: Yup.object().shape({
@@ -179,10 +192,27 @@ const SignUp = withFormik<MyFormProps, FormValues>({
   }),
 
   handleSubmit(
-    { email, password, firstName, lastName, rememberPassword }: FormValues,
+    {
+      email,
+      password,
+      firstName,
+      lastName,
+      rememberPassword,
+      dispatch,
+    }: FormValues,
     { props, setSubmitting, setErrors }
   ) {
-    console.log(email, password, firstName, lastName, rememberPassword);
+    const user: User = {
+      email: email,
+      password: password,
+      name: `${firstName} ${lastName}`,
+      rememberMePassword: rememberPassword,
+    };
+    try {
+      dispatch(asyncNewUser(user));
+    } catch (e) {
+      console.log(e);
+    }
   },
 })(InnerForm);
 

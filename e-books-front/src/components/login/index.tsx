@@ -8,19 +8,19 @@ import { ImgTop, ContainerGrey } from "./styles";
 
 const LoginPage: React.FC = () => {
   return (
-    <div className="container-fluid">
-      <ContainerGrey className="ImgBottom">
+    <ContainerGrey className="container-fluid">
+      <div className="ImgBottom">
         <ImgTop src={ImgTopLeft} alt="Image left" />
         <div className="row">
-          <div className="col-6">
+          <div className="col-lg-6 col-sm-12">
             <RoutesLogin />
           </div>
-          <div className="col-6">
+          <div className="col-lg-6">
             <ColGrey />
           </div>
         </div>
-      </ContainerGrey>
-    </div>
+      </div>
+    </ContainerGrey>
   );
 };
 

@@ -30,7 +30,7 @@ const InnerForm = (props: FormikProps<FormValues>) => {
         <div className="mt-0 mt-md-0">
           <div className="text-center">
             <Typography component="h1" variant="h6">
-              My Party
+              My App
             </Typography>
             <Typography component="p" variant="subtitle1">
               Ok let’s fetch you ya’ login details

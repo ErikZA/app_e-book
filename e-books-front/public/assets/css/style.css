@@ -64,6 +64,13 @@ h6,
     url(../../image/Element_Bolls.png) 0% 118% no-repeat;
 }
 
+@media (max-width: 768px) {
+  .ImgBottom {
+    background-size: auto !important;
+    background: url(../../image/Element_Bolls.png) 0% 118% no-repeat;
+  }
+}
+
 .pSignIp {
   text-align: end;
   margin-bottom: 0rem !important;
