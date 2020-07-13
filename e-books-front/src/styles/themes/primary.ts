@@ -1,11 +1,11 @@
 export default {
-    title: 'Primary',
+  title: "Primary",
 
-    colors: {
-        primary: '#7EBCE6',
-        secondary: '#21897E',
+  colors: {
+    primary: "#ff784f",
+    secondary: "#21897E",
 
-        background: '#f5f5f5',
-        text: '#333'
-    }
-}
+    background: "#ffe19c",
+    text: "#333",
+  },
+};

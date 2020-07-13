@@ -1,11 +1,11 @@
 export default {
-    title: 'Secondary',
+  title: "Secondary",
 
-    colors: {
-        primary: '#7159c1',
-        secondary: '#70A0AF',
+  colors: {
+    primary: "#3a3042",
+    secondary: "#3a3042",
 
-        background: '#70A0AF',
-        text: '#0000'
-    }
-}
+    background: "#db9d47",
+    text: "#fff",
+  },
+};

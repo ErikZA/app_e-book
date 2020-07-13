@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const TxtWhite = styled.p`
-  color: #fff;
+  color: #3f51b5;
   font-size: 0.8rem;
   text-align: center;
   vertical-align: bottom;

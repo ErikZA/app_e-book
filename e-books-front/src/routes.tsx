@@ -26,6 +26,7 @@ const RoutesHome = () => {
   return (
     <Switch>
       <Route exact path="/" component={HomaPanel} />
+      <Route path="*" component={HomePage} />
     </Switch>
   );
 };
@@ -36,6 +37,7 @@ const RoutesLogin = () => {
       <Route exact path="/login" component={LoginUsers} />
       <Route exact path="/signUp" component={SignUpPage} />
       <Route exact path="/forgotPassword" component={ForgotPassword} />
+      <Route path="*" component={HomePage} />
     </Switch>
   );
 };

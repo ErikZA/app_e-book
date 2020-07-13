@@ -59,7 +59,7 @@ h6,
 
 .ImgBottom {
   background-size: auto, auto !important;
-  background: linear-gradient(-90deg, #7b8cde 50%, rgba(210, 235, 250, 0.1) 50%)
+  background: linear-gradient(-90deg, #edffd9 50%, rgba(210, 235, 250, 0.1) 50%)
       no-repeat,
     url(../../image/Element_Bolls.png) 0% 118% no-repeat;
 }
@@ -75,4 +75,10 @@ h6,
   text-align: end;
   margin-bottom: 0rem !important;
   font-size: 0.9rem;
+}
+
+.btn-color-essential {
+  color: #580600;
+  background-color: #ff5f54;
+  border-color: #ff5f54;
 }

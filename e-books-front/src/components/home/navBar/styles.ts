@@ -1,13 +1,9 @@
 import styled from "styled-components";
 
 export const Container = styled.nav`
-  height: 60px;
   background: ${(props) => props.theme.colors.primary} !important;
   color: #fff;
   display: flex;
-  align-items: center;
-  padding: 0 30px;
-  justify-content: space-between;
 `;
 
 export const Images = styled.img`
@@ -20,7 +16,7 @@ export const ContainerImg = styled.div`
   align-items: center;
   margin: 0 15px 0 15px;
   cursor: pointer;
-  color: #000 !important;
+  color: ${(props) => props.theme.colors.text} !important;
 `;
 
 export const ContainerTxt = styled.div`
@@ -33,5 +29,5 @@ export const ContainerLogin = styled.div`
   margin: 0 10px 0 10px;
   font-size: 18px;
   cursor: pointer;
-  color: #000 !important;
+  color: ${(props) => props.theme.colors.text} !important;
 `;
