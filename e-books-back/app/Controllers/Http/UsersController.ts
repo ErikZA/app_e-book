@@ -23,9 +23,6 @@ export default class UsersController {
 
     Event.emit('user:send_mail', user.email)
 
-    return response.ok({
-      code: 201,
-      message: 'Successful registered user.',
-    })
+    return user
   }
 }
