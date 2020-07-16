@@ -17,10 +17,15 @@ export default class AuthController {
    *
    * User Authentication
    */
-  public async auth ({ request, auth }: HttpContextContract) {
+  public async auth ({ request, auth, response }: HttpContextContract) {
     const data = await request.validate(AuthValidator)
 
-    return await auth.attempt(data.email, data.password)
+    const token = await auth.attempt(data.email, data.password)
+
+    return response.ok({
+      ...token,
+      ...data,
+    })
   }
 
   /**
