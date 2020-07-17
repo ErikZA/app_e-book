@@ -46,11 +46,12 @@ class Mail {
         };
         const statusSend = {};
         const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: Env_1.default.get('USER_EMAIL', 'email@gmail.com'),
-                pass: Env_1.default.get('PASS_EMAIL', '12345'),
-            },
+            host: "smtp.mailtrap.io",
+      port: 2525,
+      auth: {
+        user: "380e009ef554d9",
+        pass: "d8779c89ab911e",
+      },
         });
         const readHTMLFile = function (path, callback) {
             fs_1.default.readFile(path, { encoding: 'utf-8' }, function (err, html) {
