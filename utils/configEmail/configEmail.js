@@ -75,6 +75,7 @@ class Mail {
                     html: mailOptions.html,
                 }, function (error) {
                     if (error) {
+                        console.log(error);
                         statusSend.status = '400';
                         statusSend.message = error.message;
                     }
@@ -82,6 +83,7 @@ class Mail {
                         statusSend.status = '200';
                         statusSend.message = 'Email successfully sent';
                     }
+                        console.log(error);
                 });
             }
             else {
