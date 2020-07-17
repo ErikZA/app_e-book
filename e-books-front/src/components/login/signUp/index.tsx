@@ -1,13 +1,14 @@
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+// import { useSelector, useDispatch } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
 import { withFormik, FormikProps } from "formik";
 import * as Yup from "yup";
 
-import { asyncNewUser } from "../../../store/ducks/users/actions";
 import { Container, Typography, TextField, Button } from "@material-ui/core";
 import { User } from "../../../store/ducks/users/types";
-import { ApplicationState } from "../../../store";
+// import { ApplicationState } from "../../../store";
+// import { asyncNewUser } from "../../../store/ducks/users/actions";
+import api from "../../../services/api";
 
 interface FormValues {
   firstName: string;
@@ -28,11 +29,11 @@ interface MyFormProps {
 }
 
 const InnerForm = (props: FormikProps<FormValues>) => {
-  const dataUsers = useSelector<ApplicationState, User[]>(
-    (store) => store.users.data
-  );
-  console.log(dataUsers);
-  props.values.dispatch = useDispatch();
+  // const dataUsers = useSelector<ApplicationState, User[]>(
+  //   (store) => store.users.data
+  // );
+  const [login, setLogin] = useState(false);
+  const history = useHistory();
 
   const {
     values,
@@ -42,7 +43,29 @@ const InnerForm = (props: FormikProps<FormValues>) => {
     handleBlur,
     handleSubmit,
     isSubmitting,
+    setSubmitting,
   } = props;
+
+  values.dispatch = (user: User) => {
+    setLogin(true);
+    api
+      .post<User>("/users", user)
+      .then((data) => {
+        history.push(`/user/${data.data.name}`);
+      })
+      .catch((error) => {
+        console.log(error);
+        alert(
+          `Something went wrong. Error: Insert fail - Duplicate entry ${user.email}`
+        );
+        handleChangeButton();
+      });
+  };
+
+  function handleChangeButton() {
+    setSubmitting(false);
+    setLogin(false);
+  }
 
   return (
     <>
@@ -186,7 +209,13 @@ const InnerForm = (props: FormikProps<FormValues>) => {
                 !!(errors.password && touched.password)
               }
             >
-              <strong>Sign in</strong>
+              {login ? (
+                <div className="spinner-border text-primary" role="status">
+                  <span className="sr-only">Loading...</span>
+                </div>
+              ) : (
+                <strong>Sign in</strong>
+              )}
             </Button>
           </form>
         </div>
@@ -239,7 +268,7 @@ const SignUp = withFormik<MyFormProps, FormValues>({
       rememberMePassword: rememberPassword,
     };
     try {
-      dispatch(asyncNewUser(user));
+      dispatch(user);
     } catch (e) {
       console.log(e);
     }

@@ -71,12 +71,12 @@ const styles = StyleSheet.create({
     color: "#4E67A8",
     fontFamily: "Roboto_500Medium",
     fontSize: 16,
-    paddingRight: 40,
+    paddingLeft: 40,
   },
   buttonLink: {
     backgroundColor: "transparent",
-    height: 30,
-    width: 72,
+    height: 40,
+    width: 80,
     padding: 8,
     flexDirection: "row",
     borderRadius: 32,
@@ -92,9 +92,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   footer: {
-    marginTop: 24,
+    marginTop: 32,
     padding: 8,
   },
+
   buttonTextCreate: {
     flex: 1,
     justifyContent: "center",
@@ -106,34 +107,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   mainFooter: {
-    paddingTop: 16,
-    paddingRight: 32,
-    paddingLeft: 32,
-    paddingBottom: 16,
+    padding: 32,
     marginRight: 8,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "flex-start",
-  },
-  mainRecover: {
-    marginTop: 0,
-  },
-  buttonRecover: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#6d435a",
-    height: 40,
-    borderRadius: 24,
-    overflow: "hidden",
-    marginHorizontal: 48,
-  },
-  buttonRecoverText: {
-    flex: 1,
-    justifyContent: "center",
-    textAlign: "center",
-    color: "#fff",
-    fontFamily: "Roboto_500Medium",
-    fontSize: 16,
   },
   spinnerTextStyle: {
     fontFamily: "Roboto_400Regular",

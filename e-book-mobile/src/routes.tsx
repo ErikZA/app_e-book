@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import CreateAccount from "./pages/CreateAccount";
 import RecoverPassword from "./pages/RecoverPassword";
+import Panel from "./pages/Panel";
 
 const AppStack = createStackNavigator();
 
@@ -14,6 +15,7 @@ const routes: React.FC = () => {
     <NavigationContainer>
       <AppStack.Navigator headerMode="none">
         <AppStack.Screen name="Home" component={Home} />
+        <AppStack.Screen name="Panel" component={Panel} />
         <AppStack.Screen name="Login" component={Login} />
         <AppStack.Screen name="CreateAccount" component={CreateAccount} />
         <AppStack.Screen name="RecoverPassword" component={RecoverPassword} />

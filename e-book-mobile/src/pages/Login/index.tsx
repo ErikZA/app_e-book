@@ -4,15 +4,18 @@ import {
   Text,
   NativeSyntheticEvent,
   TextInputChangeEventData,
+  Alert,
 } from "react-native";
 import { Feather as Icon } from "@expo/vector-icons";
 import { Input } from "react-native-elements";
 import { RectButton } from "react-native-gesture-handler";
 import { withFormik, FormikProps } from "formik";
 import * as Yup from "yup";
+import Spinner from "react-native-loading-spinner-overlay";
 
 import styles from "./styles";
 import { useNavigation } from "@react-navigation/native";
+import { apiPublic } from "../../api";
 
 interface InitialValues {
   email: string;
@@ -27,9 +30,9 @@ interface MyFormProps {
 }
 
 const Form = (props: FormikProps<InitialValues>) => {
+  const [login, setLogin] = useState(false);
   const navigation = useNavigation();
   const [visible, setVisible] = useState(true);
-
   const {
     values,
     errors,
@@ -37,12 +40,23 @@ const Form = (props: FormikProps<InitialValues>) => {
     setFieldValue,
     handleBlur,
     handleSubmit,
-    isSubmitting,
   } = props;
-
   //mudar aqui para o reducer
-  props.values.dispatch = (consloe) => {
-    console.log(consloe);
+  props.values.dispatch = (user) => {
+    apiPublic
+      .post("auth", user)
+      .then((data) => {
+        setLogin(false);
+        handleNavigationToPanel();
+      })
+      .catch((error) => {
+        Alert.alert(
+          "Login failed",
+          `Password or email incorrect!!`,
+          [{ text: "OK", onPress: () => setLogin(false) }],
+          { cancelable: false }
+        );
+      });
   };
 
   function handleChangeVisible() {
@@ -65,12 +79,31 @@ const Form = (props: FormikProps<InitialValues>) => {
     navigation.navigate("CreateAccount");
   }
 
+  function handleNavigationToRecoverPassword() {
+    navigation.navigate("RecoverPassword");
+  }
+
+  function handleNavigationToPanel() {
+    navigation.navigate("Panel");
+  }
+
+  function handleNavigationToLoad() {
+    navigation.navigate("Login");
+  }
+
   function handleSubmitForm() {
+    setLogin(true);
     handleSubmit();
   }
 
   return (
     <View style={styles.container}>
+      <Spinner
+        visible={login}
+        textContent={"Loading..."}
+        textStyle={styles.spinnerTextStyle}
+      ></Spinner>
+
       <Text style={styles.textTitle}>Let’s Sign You In</Text>
       <Text style={styles.textSubTitle}>Welcome back, you’ve been missed!</Text>
 
@@ -81,9 +114,10 @@ const Form = (props: FormikProps<InitialValues>) => {
           onBlur={handleBlur("email")}
           label={<Text style={styles.textEmail}>Email</Text>}
           inputStyle={styles.textInputEmail}
+          autoCapitalize="none"
           placeholder="Type here your email"
           leftIcon={<Icon name="user" size={24} color="black" />}
-          onChange={(value) => setFieldValue("email", value.nativeEvent.text)}
+          onChange={handleChangeEmail}
           errorStyle={{ color: "red" }}
           errorMessage={
             errors.email && touched.email && errors.email
@@ -97,6 +131,7 @@ const Form = (props: FormikProps<InitialValues>) => {
           onBlur={handleBlur("password")}
           label={<Text style={styles.textPassword}>Password</Text>}
           inputStyle={styles.textInputPassword}
+          autoCapitalize="none"
           placeholder="Type here your password"
           leftIcon={<Icon name="key" size={24} color="black" />}
           secureTextEntry={visible}
@@ -147,6 +182,15 @@ const Form = (props: FormikProps<InitialValues>) => {
           <Text style={styles.buttonTextCreate}>Sign up</Text>
         </RectButton>
       </View>
+
+      <View style={styles.mainRecover}>
+        <RectButton
+          style={styles.buttonRecover}
+          onPress={handleNavigationToRecoverPassword}
+        >
+          <Text style={styles.buttonRecoverText}>Recover password</Text>
+        </RectButton>
+      </View>
     </View>
   );
 };
@@ -173,7 +217,6 @@ const Login = withFormik<MyFormProps, InitialValues>({
       email: email,
       password: password,
     };
-    console.log(user);
     try {
       dispatch(user);
     } catch (e) {

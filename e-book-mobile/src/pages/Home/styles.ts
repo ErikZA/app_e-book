@@ -115,13 +115,15 @@ const styles = StyleSheet.create({
   },
   buttonLink: {
     backgroundColor: "transparent",
-    height: 40,
-    width: 220,
+    height: 30,
+    width: 170,
     padding: 8,
+    marginHorizontal: 32,
     flexDirection: "row",
     borderRadius: 32,
     overflow: "hidden",
     alignItems: "center",
+    marginBottom: 8,
   },
   footerText: {
     flex: 1,

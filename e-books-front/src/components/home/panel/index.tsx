@@ -29,7 +29,7 @@ const panel: React.FC = () => {
           </h5>
           <div className="row mb-2 mt-3">
             <Link
-              to="/about"
+              to="/user/Unknown"
               className="btn btn-color-essential btn-lg active m-auto"
               role="button"
               aria-pressed="true"

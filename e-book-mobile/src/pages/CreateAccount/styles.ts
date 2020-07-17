@@ -1,48 +1,49 @@
 import { StyleSheet } from "react-native";
+import Constants from "expo-constants";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
     justifyContent: "center",
-    padding: 16,
+    paddingVertical: 24,
+    paddingHorizontal: 16,
   },
-
-  main: {
-    marginTop: 48,
+  containerScroll: {
+    flex: 1,
+    marginTop: Constants.statusBarHeight,
   },
-
   textEmail: {
     fontSize: 16,
-    paddingTop: 8,
     paddingLeft: 8,
     fontFamily: "Roboto_500Medium",
   },
   textPassword: {
     fontSize: 16,
-    paddingTop: 8,
     paddingLeft: 8,
     fontFamily: "Roboto_500Medium",
   },
   textTitle: {
     textAlign: "left",
-    padding: 8,
+    paddingHorizontal: 8,
+    paddingTop: 32,
     fontSize: 32,
     fontFamily: "Ubuntu_700Bold",
   },
 
   textSubTitle: {
-    padding: 8,
+    paddingHorizontal: 8,
+    paddingBottom: 8,
     fontSize: 16,
     fontFamily: "Roboto_500Medium",
   },
   textInputEmail: {
-    padding: 8,
+    paddingHorizontal: 8,
     fontSize: 16,
     backgroundColor: "#fff",
   },
   textInputPassword: {
-    padding: 8,
+    paddingHorizontal: 8,
     fontSize: 16,
     backgroundColor: "#fff",
   },
@@ -91,9 +92,14 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto_500Medium",
     fontSize: 16,
   },
+  textInputName: {
+    fontSize: 16,
+    paddingLeft: 8,
+    fontFamily: "Roboto_500Medium",
+  },
   footer: {
-    marginTop: 24,
-    padding: 8,
+    paddingTop: 16,
+    paddingHorizontal: 16,
   },
   buttonTextCreate: {
     flex: 1,
@@ -106,34 +112,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   mainFooter: {
-    paddingTop: 16,
-    paddingRight: 32,
-    paddingLeft: 32,
-    paddingBottom: 16,
-    marginRight: 8,
+    paddingVertical: 9,
+    paddingHorizontal: 16,
+    marginRight: 16,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "flex-start",
-  },
-  mainRecover: {
-    marginTop: 0,
-  },
-  buttonRecover: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#6d435a",
-    height: 40,
-    borderRadius: 24,
-    overflow: "hidden",
-    marginHorizontal: 48,
-  },
-  buttonRecoverText: {
-    flex: 1,
-    justifyContent: "center",
-    textAlign: "center",
-    color: "#fff",
-    fontFamily: "Roboto_500Medium",
-    fontSize: 16,
   },
   spinnerTextStyle: {
     fontFamily: "Roboto_400Regular",

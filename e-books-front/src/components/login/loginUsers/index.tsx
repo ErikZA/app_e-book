@@ -1,21 +1,32 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useHistory } from "react-router-dom";
 import { withFormik, FormikProps } from "formik";
 import * as Yup from "yup";
 
 import { Container, Typography, TextField, Button } from "@material-ui/core";
+import { User } from "../../../store/ducks/users/types";
+import api from "../../../services/api";
 
+interface ResponseAuth {
+  token: string;
+  user: User;
+}
 interface FormValues {
   email: string;
   password: string;
+  dispatch: (callback?: any) => void;
 }
 
 interface MyFormProps {
   initialEmail?: string;
   initialPassword?: string;
+  dispatch: (callback?: any) => void;
 }
 
 const InnerForm = (props: FormikProps<FormValues>) => {
+  const [login, setLogin] = useState(false);
+  const history = useHistory();
+
   const {
     values,
     errors,
@@ -24,7 +35,30 @@ const InnerForm = (props: FormikProps<FormValues>) => {
     handleBlur,
     handleSubmit,
     isSubmitting,
+    setSubmitting,
   } = props;
+
+  values.dispatch = (user: User) => {
+    const { email, password } = user;
+    setLogin(true);
+    api
+      .post<ResponseAuth>("/auth", { email, password })
+      .then((data) => {
+        history.push(`/user/${data.data.user.name}`);
+      })
+      .catch((error) => {
+        console.log(error);
+        alert(
+          `Something went wrong. Error: incorrect email or password for ${user.email}`
+        );
+        handleChangeButton();
+      });
+  };
+
+  function handleChangeButton() {
+    setSubmitting(false);
+    setLogin(false);
+  }
 
   return (
     <>
@@ -96,7 +130,13 @@ const InnerForm = (props: FormikProps<FormValues>) => {
                 !!(errors.password && touched.password)
               }
             >
-              <strong>Sign in</strong>
+              {login ? (
+                <div className="spinner-border text-primary" role="status">
+                  <span className="sr-only">Loading...</span>
+                </div>
+              ) : (
+                <strong>Sign in</strong>
+              )}
             </Button>
             <p className="pSignIp">
               <Link to="/forgotPassword">
@@ -114,6 +154,7 @@ const LoginUsers = withFormik<MyFormProps, FormValues>({
   mapPropsToValues: (props) => ({
     email: props.initialEmail || "",
     password: props.initialPassword || "",
+    dispatch: props.dispatch,
   }),
 
   validationSchema: Yup.object().shape({
@@ -124,10 +165,18 @@ const LoginUsers = withFormik<MyFormProps, FormValues>({
   }),
 
   handleSubmit(
-    { email, password }: FormValues,
+    { email, password, dispatch }: FormValues,
     { props, setSubmitting, setErrors }
   ) {
-    console.log(email, password);
+    const user = {
+      email: email,
+      password: password,
+    };
+    try {
+      dispatch(user);
+    } catch (e) {
+      console.log(e);
+    }
   },
 })(InnerForm);
 

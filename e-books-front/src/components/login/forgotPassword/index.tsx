@@ -1,19 +1,30 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useHistory } from "react-router-dom";
 import { withFormik, FormikProps } from "formik";
 import * as Yup from "yup";
 
 import { Container, Typography, TextField, Button } from "@material-ui/core";
 
+import api from "../../../services/api";
+
+interface Recover {
+  code: number;
+  message: string;
+}
 interface FormValues {
   email: string;
+  dispatch: (callback?: any) => void;
 }
 
 interface MyFormProps {
   initialEmail?: string;
+  dispatch: (callback?: any) => void;
 }
 
 const InnerForm = (props: FormikProps<FormValues>) => {
+  const [login, setLogin] = useState(false);
+  const history = useHistory();
+
   const {
     values,
     errors,
@@ -22,7 +33,30 @@ const InnerForm = (props: FormikProps<FormValues>) => {
     handleBlur,
     handleSubmit,
     isSubmitting,
+    setSubmitting,
   } = props;
+
+  values.dispatch = (email: string) => {
+    setLogin(true);
+    api
+      .post<Recover>("/forgot_password", { email })
+      .then((data) => {
+        if (data.data.code === 200) {
+          alert(`Email successfully sent to ${email}`);
+          history.push(`/home`);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        alert(`Something went wrong. Error: incorrect email: ${email}`);
+        handleChangeButton();
+      });
+  };
+
+  function handleChangeButton() {
+    setSubmitting(false);
+    setLogin(false);
+  }
 
   return (
     <>
@@ -69,7 +103,13 @@ const InnerForm = (props: FormikProps<FormValues>) => {
               className="mb-3 mb-md-4 mt-4"
               disabled={isSubmitting || !!(errors.email && touched.email)}
             >
-              <strong>Proceed</strong>
+              {login ? (
+                <div className="spinner-border text-primary" role="status">
+                  <span className="sr-only">Loading...</span>
+                </div>
+              ) : (
+                <strong>Proceed</strong>
+              )}
             </Button>
           </form>
         </div>
@@ -81,14 +121,22 @@ const InnerForm = (props: FormikProps<FormValues>) => {
 const ForgotPassword = withFormik<MyFormProps, FormValues>({
   mapPropsToValues: (props) => ({
     email: props.initialEmail || "",
+    dispatch: props.dispatch,
   }),
 
   validationSchema: Yup.object().shape({
     email: Yup.string().email("Email not valid").required("Email is required"),
   }),
 
-  handleSubmit({ email }: FormValues, { props, setSubmitting, setErrors }) {
-    console.log(email);
+  handleSubmit(
+    { email, dispatch }: FormValues,
+    { props, setSubmitting, setErrors }
+  ) {
+    try {
+      dispatch(email);
+    } catch (e) {
+      console.log(e);
+    }
   },
 })(InnerForm);
 

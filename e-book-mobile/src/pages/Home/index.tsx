@@ -18,7 +18,7 @@ const Home: React.FC = () => {
   }
 
   function handleNavigationToPanel() {
-    // navigation.navigate('CreateAccount')
+    navigation.navigate("Panel");
   }
 
   return (

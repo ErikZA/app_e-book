@@ -1,18 +1,28 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { withFormik, FormikProps } from "formik";
 import * as Yup from "yup";
+import api from "../../../services/api";
 
 import { Container, Typography, TextField, Button } from "@material-ui/core";
+import { User } from "../../../store/ducks/users/types";
 
 interface FormValues {
   email: string;
   password: string;
+  dispatch: (callback?: any) => void;
 }
 
 interface MyFormProps {
   initialEmail?: string;
   initialPassword?: string;
+  dispatch: (callback?: any) => void;
+}
+
+interface TokenUser {
+  token?: string;
+  email: string;
+  password: string;
 }
 
 interface Token {
@@ -21,6 +31,7 @@ interface Token {
 
 const InnerForm = (props: FormikProps<FormValues>) => {
   const { token } = useParams<Token>();
+  const [login, setLogin] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
@@ -38,7 +49,31 @@ const InnerForm = (props: FormikProps<FormValues>) => {
     handleBlur,
     handleSubmit,
     isSubmitting,
+    setSubmitting,
   } = props;
+
+  values.dispatch = (user: TokenUser) => {
+    setLogin(true);
+    user.token = token;
+    api
+      .post<User>("/reset_password", user)
+      .then((data) => {
+        history.push(`/user/${data.data.name}`);
+        history.block(`/recoverPassword/${token}`);
+      })
+      .catch((error) => {
+        console.log(error);
+        alert(
+          `Something went wrong. Error: incorrect email: ${user.email} or token invalid`
+        );
+        handleChangeButton();
+      });
+  };
+
+  function handleChangeButton() {
+    setSubmitting(false);
+    setLogin(false);
+  }
 
   return (
     <>
@@ -104,7 +139,13 @@ const InnerForm = (props: FormikProps<FormValues>) => {
                 !!(errors.password && touched.password)
               }
             >
-              <strong>Continue</strong>
+              {login ? (
+                <div className="spinner-border text-primary" role="status">
+                  <span className="sr-only">Loading...</span>
+                </div>
+              ) : (
+                <strong>Continue</strong>
+              )}
             </Button>
           </form>
         </div>
@@ -117,6 +158,7 @@ const recoverPassword = withFormik<MyFormProps, FormValues>({
   mapPropsToValues: (props) => ({
     email: props.initialEmail || "",
     password: props.initialPassword || "",
+    dispatch: props.dispatch,
   }),
 
   validationSchema: Yup.object().shape({
@@ -127,10 +169,18 @@ const recoverPassword = withFormik<MyFormProps, FormValues>({
   }),
 
   handleSubmit(
-    { email, password }: FormValues,
+    { email, password, dispatch }: FormValues,
     { props, setSubmitting, setErrors }
   ) {
-    console.log(email, password);
+    const user: TokenUser = {
+      email: email,
+      password: password,
+    };
+    try {
+      dispatch(user);
+    } catch (e) {
+      console.log(e);
+    }
   },
 })(InnerForm);
 
