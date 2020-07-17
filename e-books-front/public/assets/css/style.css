@@ -69,6 +69,11 @@ h6,
     background-size: auto !important;
     background: url(../../image/Element_Bolls.png) 0% 118% no-repeat;
   }
+
+  .MuiFormControl-marginNormal2 {
+    margin-top: 16px !important;
+    margin-bottom: 8px !important;
+  }
 }
 
 .pSignIp {
@@ -81,4 +86,9 @@ h6,
   color: #580600;
   background-color: #ff5f54;
   border-color: #ff5f54;
+}
+
+.MuiFormControl-marginNormal2 {
+  margin-top: 3px !important;
+  margin-bottom: 3px !important;
 }

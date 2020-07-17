@@ -59,6 +59,12 @@ const InnerForm = (props: FormikProps<FormValues>) => {
           <form onSubmit={handleSubmit}>
             <div>
               <TextField
+                className="MuiFormControl-marginNormal2"
+                error={
+                  errors.firstName && touched.firstName && errors.firstName
+                    ? true
+                    : false
+                }
                 type="text"
                 variant="outlined"
                 margin="normal"
@@ -75,6 +81,12 @@ const InnerForm = (props: FormikProps<FormValues>) => {
             </div>
             <div>
               <TextField
+                className="MuiFormControl-marginNormal2"
+                error={
+                  errors.lastName && touched.lastName && errors.lastName
+                    ? true
+                    : false
+                }
                 type="text"
                 variant="outlined"
                 margin="normal"
@@ -91,6 +103,10 @@ const InnerForm = (props: FormikProps<FormValues>) => {
             </div>
             <div>
               <TextField
+                className="MuiFormControl-marginNormal2"
+                error={
+                  errors.email && touched.email && errors.email ? true : false
+                }
                 type="email"
                 variant="outlined"
                 margin="normal"
@@ -105,6 +121,12 @@ const InnerForm = (props: FormikProps<FormValues>) => {
             </div>
             <div>
               <TextField
+                className="MuiFormControl-marginNormal2"
+                error={
+                  errors.password && touched.password && errors.password
+                    ? true
+                    : false
+                }
                 type="password"
                 variant="outlined"
                 margin="normal"
@@ -121,6 +143,14 @@ const InnerForm = (props: FormikProps<FormValues>) => {
             </div>
             <div>
               <TextField
+                className="MuiFormControl-marginNormal2"
+                error={
+                  errors.rememberPassword &&
+                  touched.rememberPassword &&
+                  errors.rememberPassword
+                    ? true
+                    : false
+                }
                 type="text"
                 variant="outlined"
                 margin="normal"

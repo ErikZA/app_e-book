@@ -12,8 +12,13 @@ const ColGrey: React.FC = () => {
         <strong>
           Version 0.0.1 - Beta - Nova Fatima - Paraná - Brazil <br />
           Erik Henrique de Oliveira Zambeli <br />
-          GitHub: https://github.com/ErikZA <br />
-          LinkeDin: https://www.linkedin.com/in/erik-zambeli-539ab411a
+          GitHub:{" "}
+          <a href="https://github.com/ErikZA">https://github.com/ErikZA</a>{" "}
+          <br />
+          Linkedin:{" "}
+          <a href="https://www.linkedin.com/in/erik-zambeli-539ab411a">
+            https://www.linkedin.com/in/erik-zambeli-539ab411a
+          </a>
         </strong>
       </TxtWhite>
     </>

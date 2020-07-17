@@ -39,6 +39,9 @@ const InnerForm = (props: FormikProps<FormValues>) => {
           <form onSubmit={handleSubmit}>
             <div className="mt-3">
               <TextField
+                error={
+                  errors.email && touched.email && errors.email ? true : false
+                }
                 type="email"
                 variant="outlined"
                 margin="normal"

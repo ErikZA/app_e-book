@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useParams, useHistory } from "react-router-dom";
 import { withFormik, FormikProps } from "formik";
 import * as Yup from "yup";
 
@@ -15,7 +15,21 @@ interface MyFormProps {
   initialPassword?: string;
 }
 
+interface Token {
+  token: string;
+}
+
 const InnerForm = (props: FormikProps<FormValues>) => {
+  const { token } = useParams<Token>();
+  const history = useHistory();
+
+  useEffect(() => {
+    if (token.length < 35) {
+      alert("Token invalid \nTry again");
+      history.push("/forgotPassword");
+    }
+  }, [token]);
+
   const {
     values,
     errors,
@@ -35,7 +49,7 @@ const InnerForm = (props: FormikProps<FormValues>) => {
               My App
             </Typography>
             <Typography component="p" variant="subtitle1">
-              Sign in to your account to continue
+              Enter your email and a new password
             </Typography>
           </div>
           <form onSubmit={handleSubmit}>
@@ -67,7 +81,7 @@ const InnerForm = (props: FormikProps<FormValues>) => {
                 variant="outlined"
                 margin="normal"
                 fullWidth
-                label="Password"
+                label="New Password"
                 name="password"
                 helperText={
                   errors.password && touched.password && errors.password
@@ -77,12 +91,6 @@ const InnerForm = (props: FormikProps<FormValues>) => {
                 value={values.password}
               />
             </div>
-            <p className="pSignIp">
-              Don’t have an account?{" "}
-              <Link to="/signUp">
-                <strong>Sign Up</strong>
-              </Link>
-            </p>
             <Button
               type="submit"
               variant="contained"
@@ -96,13 +104,8 @@ const InnerForm = (props: FormikProps<FormValues>) => {
                 !!(errors.password && touched.password)
               }
             >
-              <strong>Sign in</strong>
+              <strong>Continue</strong>
             </Button>
-            <p className="pSignIp">
-              <Link to="/forgotPassword">
-                <strong>Forgot Password?</strong>
-              </Link>
-            </p>
           </form>
         </div>
       </Container>
@@ -110,7 +113,7 @@ const InnerForm = (props: FormikProps<FormValues>) => {
   );
 };
 
-const LoginUsers = withFormik<MyFormProps, FormValues>({
+const recoverPassword = withFormik<MyFormProps, FormValues>({
   mapPropsToValues: (props) => ({
     email: props.initialEmail || "",
     password: props.initialPassword || "",
@@ -131,4 +134,4 @@ const LoginUsers = withFormik<MyFormProps, FormValues>({
   },
 })(InnerForm);
 
-export default LoginUsers;
+export default recoverPassword;
