@@ -14,7 +14,11 @@ const routes: React.FC = () => {
   return (
     <NavigationContainer>
       <AppStack.Navigator headerMode="none">
-        <AppStack.Screen name="Home" component={Home} />
+        <AppStack.Screen
+          name="Home"
+          component={Home}
+          initialParams={{ name: "" }}
+        />
         <AppStack.Screen name="Panel" component={Panel} />
         <AppStack.Screen name="Login" component={Login} />
         <AppStack.Screen name="CreateAccount" component={CreateAccount} />

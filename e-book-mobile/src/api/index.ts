@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = "http://192.168.0.105:3333";
+const baseUrl = " https://my-events-controll.herokuapp.com";
 const commonConfigs = {
   /*timeout: 12000000*/
 };

@@ -41,10 +41,10 @@ const Form = (props: FormikProps<InitialValues>) => {
 
   //mudar aqui para o reducer
   props.values.dispatch = (user) => {
+    setLogin(true);
     apiPublic
       .post("forgot_password", user)
       .then((data) => {
-        console.log(data);
         setLogin(false);
         createAlertSentEmail();
       })

@@ -18,7 +18,7 @@ const Home: React.FC = () => {
   }
 
   function handleNavigationToPanel() {
-    navigation.navigate("Panel");
+    navigation.navigate("Panel", { name: "Unknown" });
   }
 
   return (

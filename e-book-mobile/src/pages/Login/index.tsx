@@ -43,11 +43,12 @@ const Form = (props: FormikProps<InitialValues>) => {
   } = props;
   //mudar aqui para o reducer
   props.values.dispatch = (user) => {
+    setLogin(true);
     apiPublic
       .post("auth", user)
       .then((data) => {
         setLogin(false);
-        handleNavigationToPanel();
+        handleNavigationToPanel(data.data.user.name);
       })
       .catch((error) => {
         Alert.alert(
@@ -83,8 +84,8 @@ const Form = (props: FormikProps<InitialValues>) => {
     navigation.navigate("RecoverPassword");
   }
 
-  function handleNavigationToPanel() {
-    navigation.navigate("Panel");
+  function handleNavigationToPanel(name: string) {
+    navigation.navigate("Panel", { name: name });
   }
 
   function handleNavigationToLoad() {
@@ -92,7 +93,6 @@ const Form = (props: FormikProps<InitialValues>) => {
   }
 
   function handleSubmitForm() {
-    setLogin(true);
     handleSubmit();
   }
 

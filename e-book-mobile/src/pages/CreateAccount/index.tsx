@@ -53,17 +53,19 @@ const Form = (props: FormikProps<InitialValues>) => {
 
   //mudar aqui para o reducer
   props.values.dispatch = (user) => {
+    setLogin(true);
     apiPublic
       .post("users", user)
       .then((data) => {
         setLogin(false);
-        handleNavigationToPanel();
+        handleNavigationToPanel(data.data.name);
       })
       .catch((error) => {
+        setLogin(false);
         Alert.alert(
           "Create account failed",
           `Email already exists!!`,
-          [{ text: "OK", onPress: () => setLogin(false) }],
+          [{ text: "OK", onPress: () => {} }],
           { cancelable: false }
         );
       });
@@ -102,11 +104,10 @@ const Form = (props: FormikProps<InitialValues>) => {
   function handleNavigationToLogin() {
     navigation.navigate("Login");
   }
-  function handleNavigationToPanel() {
-    navigation.navigate("Panel");
+  function handleNavigationToPanel(name: string) {
+    navigation.navigate("Panel", { name: name });
   }
   function handleSubmitForm() {
-    setLogin(true);
     handleSubmit();
   }
 
