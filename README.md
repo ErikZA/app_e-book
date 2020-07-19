@@ -17,13 +17,13 @@ App desenvolvido para a testar o framework  Adonis 5 e a prática de autenticaç
 ## My App 
 
 <p align="center">
- <img src="imagesReadme/fox.jpeg" alt="Tela 9" width="25%" />
+ <img src="imagesReadme/fox.jpeg" alt="Tela 9" width="20%" />
 
- <img src="imagesReadme/sign.jpeg" alt="Tela 10" width="25%"/>
+ <img src="imagesReadme/sign.jpeg" alt="Tela 10" width="20%"/>
  
-<img src="imagesReadme/start.jpeg" alt="Tela 11" width="25%" />
+<img src="imagesReadme/start.jpeg" alt="Tela 11" width="20%" />
 
-<img src="imagesReadme/recover.jpeg" alt="Tela 11" width="25%" />
+<img src="imagesReadme/recover.jpeg" alt="Tela 12" width="20%" />
 
 </p>
 
