@@ -1,5 +1,10 @@
 ﻿# My App
  
+ 
+<p align="center">
+  <img alt="License" src="https://img.shields.io/static/v1?label=license&message=MIT&color=7159c1&labelColor=000000">
+</p>
+ 
 App desenvolvido para a testar o framework  Adonis 5 e a prática de autenticação em react e react native.
  
 ## My Site web
