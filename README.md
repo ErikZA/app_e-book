@@ -12,7 +12,7 @@ App desenvolvido para a testar o framework  Adonis 5 e a prática de autenticaç
  
  <img src="imagesReadme/startWeb.jpeg" alt="Tela 3" width="35%" />
 
- <img src="imagesReadme/signErrorApp.jpeg" alt="Tela 4" width="35%" height="35%"/>
+ <img src="imagesReadme/signErrorApp.jpeg" alt="Tela 4" width="15%" />
  
 </p>
 
