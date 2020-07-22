@@ -24,50 +24,24 @@ interface Props {
 }
 
 import { View } from "react-native";
-import React from "react";
-import { YAxis, BarChart, Grid, XAxis } from "react-native-svg-charts";
-import * as scale from "d3-scale";
+import React, { useEffect, useState } from "react";
+import {
+  LineChart,
+  YAxis,
+  BarChart,
+  Grid,
+  XAxis,
+} from "react-native-svg-charts";
 import { Text } from "react-native-svg";
-
-const fill = "rgb(134, 65, 244)";
-
-const data = [
-  {
-    value: 50,
-    label: "One",
-  },
-  {
-    value: 10,
-    label: "Two",
-  },
-  {
-    value: 40,
-    label: "Three",
-  },
-  {
-    value: 95,
-    label: "Four",
-  },
-  {
-    value: 85,
-    label: "Five",
-  },
-];
-
-data.sort((a, b) => {
-  if (a.value > b.value) return -1;
-  if (a.value < b.value) return 1;
-  return 0;
-});
 
 const CUT_OFF = 20;
 const Labels = ({ x, y, bandwidth, data }: Props) =>
-  data.map(({ value }: any, index: number) => (
+  data.map((value: any, index: number) => (
     <Text
       key={index}
       x={x(index) + bandwidth / 2}
       y={value < CUT_OFF ? y(value) - 10 : y(value) + 15}
-      fontSize={14}
+      fontSize={12}
       fill={value >= CUT_OFF ? "white" : "black"}
       alignmentBaseline={"middle"}
       textAnchor={"middle"}
@@ -76,60 +50,61 @@ const Labels = ({ x, y, bandwidth, data }: Props) =>
     </Text>
   ));
 
+const fill = "rgb(134, 65, 244)";
+const data = [51, 18, 44, 89, 8];
+const axesSvg = { fontSize: 10, fill: "grey" };
+const verticalContentInset = { top: 10, bottom: 10, right: 10, left: 10 };
+const xAxisHeight = 30;
+
 const Panel = () => {
+  const [load, setLoad] = useState(true);
+  useEffect(() => {
+    setLoad(false);
+  }, []);
   return (
-    <View style={{ height: 200, padding: 20 }}>
-      <View
-        style={{
-          height: 200,
-          flexDirection: "row",
-          marginHorizontal: 8,
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: "50%",
-        }}
-      >
-        <YAxis
+    <View style={{ height: 200, padding: 20, flexDirection: "row" }}>
+      <YAxis
+        data={data}
+        style={{ marginBottom: xAxisHeight }}
+        contentInset={verticalContentInset}
+        svg={axesSvg}
+      />
+
+      <View style={{ flex: 1, marginLeft: 10 }}>
+        <LineChart
+          style={{ flex: 1 }}
           data={data}
-          scale={scale.scaleBand}
-          contentInset={{ top: 10, bottom: 10 }}
-          svg={{
-            fill: "grey",
-            fontSize: 10,
-          }}
-          spacingInner={0.2}
-          yAccessor={({ index, item }) => item.value}
-          formatLabel={(value, index) => {
-            if (index < 5) return `${data[index].value} PX`;
-            else return `${value}`;
-          }}
-        />
+          gridMin={0}
+          contentInset={verticalContentInset}
+          svg={{ stroke: "rgb(134, 65, 244)" }}
+        >
+          <Grid />
+        </LineChart>
         <BarChart
-          style={{ flex: 1, marginHorizontal: 16 }}
-          data={data}
-          numberOfTicks={data.length}
-          yAccessor={({ item }) => item.value}
-          spacingInner={0.3}
-          svg={{ fill }}
-          gridProps={{
-            ticks: data.map((value) => value.value),
-            belowChart: true,
-            svg: { stroke: "#000" },
-            direction: Grid.Direction.VERTICAL,
+          style={{
+            flex: 1,
+            position: load ? "relative" : "absolute",
+            marginHorizontal: 0,
+            height: 110,
+            marginTop: 10,
           }}
+          spacingInner={0.75}
+          spacingOuter={0.05}
+          data={data}
+          svg={{ fill }}
           gridMin={0}
         >
           <Grid />
           <Labels />
         </BarChart>
+        <XAxis
+          style={{ marginHorizontal: -10, height: xAxisHeight }}
+          data={data}
+          formatLabel={(value, index) => `${index + 1} Mês`}
+          contentInset={{ left: 24, right: 24 }}
+          svg={axesSvg}
+        />
       </View>
-      <XAxis
-        style={{ marginHorizontal: -10, marginTop: 5 }}
-        data={data}
-        formatLabel={(value, index) => `${index + 1}º Mês`}
-        contentInset={{ left: 80, right: 55 }}
-        svg={{ fontSize: 10, fill: "black" }}
-      />
     </View>
   );
 };
