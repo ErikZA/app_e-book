@@ -20,34 +20,28 @@ interface Props {
   x: any;
   y: any;
   bandwidth: any;
-  data: any;
+  data: any[];
 }
 
 import { View } from "react-native";
-import React, { useEffect, useState } from "react";
-import {
-  LineChart,
-  YAxis,
-  BarChart,
-  Grid,
-  XAxis,
-} from "react-native-svg-charts";
-import { Text } from "react-native-svg";
+import React from "react";
+import { YAxis, BarChart, Grid, XAxis } from "react-native-svg-charts";
+import { Line } from "react-native-svg";
 
-const CUT_OFF = 20;
-const Labels = ({ x, y, bandwidth, data }: Props) =>
-  data.map((value: any, index: number) => (
-    <Text
+const Lines = ({ x, y, bandwidth, data }: Props) =>
+  data.map((value: number, index: number) => (
+    <Line
       key={index}
-      x={x(index) + bandwidth / 2}
-      y={value < CUT_OFF ? y(value) - 10 : y(value) + 15}
-      fontSize={12}
-      fill={value >= CUT_OFF ? "white" : "black"}
-      alignmentBaseline={"middle"}
-      textAnchor={"middle"}
-    >
-      {value}
-    </Text>
+      x1={x(index) + bandwidth / 2}
+      y1={y(value)}
+      x2={
+        data.length != index + 1
+          ? x(index + 1) + bandwidth / 2
+          : x(index) + bandwidth / 2
+      }
+      y2={data.length != index + 1 ? y(data[index + 1]) : y(value)}
+      stroke={"#000"}
+    ></Line>
   ));
 
 const fill = "rgb(134, 65, 244)";
@@ -57,10 +51,6 @@ const verticalContentInset = { top: 10, bottom: 10, right: 10, left: 10 };
 const xAxisHeight = 30;
 
 const Panel = () => {
-  const [load, setLoad] = useState(true);
-  useEffect(() => {
-    setLoad(false);
-  }, []);
   return (
     <View style={{ height: 200, padding: 20, flexDirection: "row" }}>
       <YAxis
@@ -71,19 +61,9 @@ const Panel = () => {
       />
 
       <View style={{ flex: 1, marginLeft: 10 }}>
-        <LineChart
-          style={{ flex: 1 }}
-          data={data}
-          gridMin={0}
-          contentInset={verticalContentInset}
-          svg={{ stroke: "rgb(134, 65, 244)" }}
-        >
-          <Grid />
-        </LineChart>
         <BarChart
           style={{
             flex: 1,
-            position: load ? "relative" : "absolute",
             marginHorizontal: 0,
             height: 110,
             marginTop: 10,
@@ -95,10 +75,10 @@ const Panel = () => {
           gridMin={0}
         >
           <Grid />
-          <Labels />
+          <Lines />
         </BarChart>
         <XAxis
-          style={{ marginHorizontal: -10, height: xAxisHeight }}
+          style={{ marginHorizontal: -10, height: xAxisHeight, marginTop: 5 }}
           data={data}
           formatLabel={(value, index) => `${index + 1} Mês`}
           contentInset={{ left: 24, right: 24 }}
